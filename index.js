@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config()
 
 const app = express()
-const port = 7000;
+const port = process.evn.PORT || 7000;
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
