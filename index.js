@@ -78,7 +78,7 @@ app.get("/allorders", async (req, res)=>{
 });
 
 app.get('/', (req, res) => {
-  res.send('final')
+  console.log('final')
 });
 
 app.listen(port, () => {
