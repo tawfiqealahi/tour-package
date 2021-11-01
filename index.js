@@ -10,7 +10,9 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://tourpackagedbuser :lspcwfKAAXU6OSb2@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -24,8 +26,8 @@ app.get('/', (req, res) => {
   res.send('Hello tourist')
 });
 client.connect((err)=>{
-    const productCollection= client.db("foodShop").collection("products");
-    const orderCollection=client.db("foodShop").collection("orders");
+    const productCollection= client.db("tourPackage").collection("products");
+    const orderCollection=client.db("tourPackage").collection("orders");
 
       // perform actions on the collection object
   client.close();
