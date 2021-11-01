@@ -10,9 +10,9 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-const uri = `mongodb+srv://tourpackagedbuser :lspcwfKAAXU6OSb2@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+// const uri = `mongodb+srv://tourpackagedbuser:lspcwfKAAXU6OSb2@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jvpmw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -26,19 +26,53 @@ app.get('/', (req, res) => {
   res.send('Hello tourist')
 });
 client.connect((err)=>{
-    const productCollection= client.db("tourPackage").collection("products");
-    const orderCollection=client.db("tourPackage").collection("orders");
+    const productCollection= client.db("tourPackage").collection("services");
+
+    // const orderCollection=client.db("tourPackage").collection("orders");
 
       // perform actions on the collection object
-  client.close();
+//   client.close();
 
 
-    app.post("/order",(req, res)=>{
+    app.post("/orders",(req, res)=>{
         productCollection.insertOne(req.body).then((result)=>{
             res.send(result.insertedId);
         //    console.log(result);
        });
+
 });
+
+app.get("/searchValue", async (req, res)=>{
+    const result = await SearchResult.find({Package: {$regex: req.query.search},
+    }).toArray();
+    res.send(result);
+
+    // console.log(req.query.search);
+});
+// get all orders
+
+app.get("/allorders", async (req, res)=>{
+    const result = await allOrders.find({}).toArray();
+    res.send(result);
+    // console.log(result);
+});
+ // delete event
+
+ app.delete("/deleteEvent/:id", async (req, res) => {
+    console.log(req.params.id);
+    const result = await EventsCollection.deleteOne({
+      _id: ObjectId(req.params.id),
+    });
+    res.send(result);
+  });
+  // my orders
+
+  app.get("/myorders/:email", async (req, res) => {
+    const result = await EventsCollection.find({
+      email: req.params.email,
+    }).toArray();
+    res.send(result);
+  });
 
 
 });
