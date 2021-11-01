@@ -77,6 +77,10 @@ app.get("/allorders", async (req, res)=>{
 
 });
 
+app.get('/', (req, res) => {
+  res.send('final')
+});
+
 app.listen(port, () => {
   console.log(`Example app listening tawfiq tawfiq http://localhost:${port}`)
 })
