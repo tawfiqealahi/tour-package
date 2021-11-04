@@ -26,18 +26,17 @@ app.get('/', (req, res) => {
   res.send('Hello tourist')
 });
 client.connect((err)=>{
-    const productCollection= client.db("tourPackage").collection("services");
-
-    // const orderCollection=client.db("tourPackage").collection("orders");
+    const OrderCollection= client.db("tourPackage").collection("services");
+ 
 
       // perform actions on the collection object
 //   client.close();
 
 
-    app.post("/orders",(req, res)=>{
-        productCollection.insertOne(req.body).then((result)=>{
-            res.send(result.insertedId);
-        //    console.log(result);
+    app.post("/orders", async (req, res)=>{
+      const result = await OrderCollection.insertOne(req.body);
+      res.send(result);
+           console.log(result) ;
        });
 
 });
@@ -47,35 +46,35 @@ app.get("/searchValue", async (req, res)=>{
     }).toArray();
     res.send(result);
 
-    // console.log(req.query.search);
+    console.log(req.query.search);
 });
 // get all orders
 
-app.get("/allorders", async (req, res)=>{
-    const result = await allOrders.find({}).toArray();
+app.get("/allOrders", async (req, res)=>{
+    const result = await OrderCollection.find({email:req.params.email}).toArray();
     res.send(result);
     // console.log(result);
 });
  // delete event
 
- app.delete("/deleteEvent/:id", async (req, res) => {
-    console.log(req.params.id);
-    const result = await EventsCollection.deleteOne({
-      _id: ObjectId(req.params.id),
-    });
-    res.send(result);
-  });
+//  app.delete("/deleteEvent/:id", async (req, res) => {
+//     console.log(req.params.id);
+//     const result = await EventsCollection.deleteOne({
+//       _id: ObjectId(req.params.id),
+//     });
+//     res.send(result);
+//   });
   // my orders
 
-  app.get("/myorders/:email", async (req, res) => {
-    const result = await EventsCollection.find({
-      email: req.params.email,
-    }).toArray();
-    res.send(result);
-  });
+  // app.get("/myorders/:email", async (req, res) => {
+  //   const result = await EventsCollection.find({
+  //     email: req.params.email,
+  //   }).toArray();
+  //   res.send(result);
+  // });
 
 
-});
+
 
 app.get('/', (req, res) => {
   console.log('final')
