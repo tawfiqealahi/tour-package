@@ -1,6 +1,6 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
 const bodyParser = require("body-parser");
+const { MongoClient } = require('mongodb');
 // const { MongoClient } = require('mongodb').MongoClient;
 // const ObjectId = require('ObjectId').ObjectId;
 
@@ -26,7 +26,8 @@ app.get('/', (req, res) => {
   res.send('Hello tourist')
 });
 client.connect((err)=>{
-    const OrderCollection= client.db("tourPackage").collection("services");
+    const ServiceCollection= client.db("tourPackage").collection("allServices");
+    const OrderCollection= client.db("tourPackage").collection("orders");
  
 
       // perform actions on the collection object
@@ -36,48 +37,34 @@ client.connect((err)=>{
     app.post("/orders", async (req, res)=>{
       const result = await OrderCollection.insertOne(req.body);
       res.send(result);
-           console.log(result) ;
+          //  console.log(req.body) ;
        });
 
-});
 
-app.get("/searchValue", async (req, res)=>{
-    const result = await SearchResult.find({Package: {$regex: req.query.search},
-    }).toArray();
-    res.send(result);
+      //  get all services
 
-    console.log(req.query.search);
-});
-// get all orders
+       app.get("/allServices", async (req, res)=>{
+        const result = await ServiceCollection.find({}).toArray();
+        // res.send(req.body);
+        res.json(result);
+        // console.log(req.body);
+       })
+      //  get all orders
 
-app.get("/allOrders", async (req, res)=>{
-    const result = await OrderCollection.find({email:req.params.email}).toArray();
-    res.send(result);
-    // console.log(result);
-});
- // delete event
+       app.get("/allOrders", async (req, res)=>{
+        const result = await OrderCollection.find({}).toArray();
+        res.send(result);
+       })
 
-//  app.delete("/deleteEvent/:id", async (req, res) => {
-//     console.log(req.params.id);
-//     const result = await EventsCollection.deleteOne({
-//       _id: ObjectId(req.params.id),
-//     });
-//     res.send(result);
-//   });
-  // my orders
-
-  // app.get("/myorders/:email", async (req, res) => {
-  //   const result = await EventsCollection.find({
-  //     email: req.params.email,
-  //   }).toArray();
-  //   res.send(result);
-  // });
+      //  single orders
+      app.get("/myOrders/:id", async (req, res)=>{
+        const result = await OrderCollection.find({_id: req.params.id })
+        .toArray();
+        console.log(result);
+      })
 
 
 
-
-app.get('/', (req, res) => {
-  console.log('final')
 });
 
 app.listen(port, () => {
