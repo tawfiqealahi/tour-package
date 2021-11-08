@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const { MongoClient } = require('mongodb');
 // const { MongoClient } = require('mongodb').MongoClient;
 // const ObjectId = require('ObjectId').ObjectId;
+const ObjectId = require('mongodb').ObjectId;
 
 const cors = require('cors');
 require('dotenv').config();
@@ -34,7 +35,8 @@ client.connect((err)=>{
 //   client.close();
 
 
-    app.post("/orders", async (req, res)=>{
+//  add orders
+    app.post("/Orders", async (req, res)=>{
       const result = await OrderCollection.insertOne(req.body);
       res.send(result);
           //  console.log(req.body) ;
@@ -47,7 +49,7 @@ client.connect((err)=>{
         const result = await ServiceCollection.find({}).toArray();
         // res.send(req.body);
         res.json(result);
-        // console.log(req.body);
+        console.log(req.body);
        })
       //  get all orders
 
@@ -56,13 +58,22 @@ client.connect((err)=>{
         res.send(result);
        })
 
-      //  single orders
+      //  get single orders
       app.get("/myOrders/:id", async (req, res)=>{
-        const result = await OrderCollection.find({_id: req.params.id })
-        .toArray();
-        console.log(result);
+        console.log(req.params.id);
+        // const result = await ServiceCollection.findOne({_id:ObjectId(req.params.id) });
+        
+        // res.send(result);
+        // console.log(result);
       })
+      // confirm order
+      // app.post("/confirmOrder", async(req,res)=>{
+      //   const result = await OrderCollection.insertOne(req.body);
+      //   res.send(result);
+      //   // console.log(result);
+      // })
 
+      // my  All orders
 
 
 });
