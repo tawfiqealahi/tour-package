@@ -35,7 +35,7 @@ client.connect((err)=>{
 //   client.close();
 
 
-//  add orders
+//  add confirm orders
     app.post("/Orders", async (req, res)=>{
       const result = await OrderCollection.insertOne(req.body);
       res.send(result);
@@ -47,9 +47,8 @@ client.connect((err)=>{
 
        app.get("/allServices", async (req, res)=>{
         const result = await ServiceCollection.find({}).toArray();
-        // res.send(req.body);
         res.json(result);
-        console.log(req.body);
+        // console.log(req.body);
        })
       //  get all orders
 
@@ -60,20 +59,13 @@ client.connect((err)=>{
 
       //  get single orders
       app.get("/myOrders/:id", async (req, res)=>{
-        console.log(req.params.id);
-        // const result = await ServiceCollection.findOne({_id:ObjectId(req.params.id) });
+        // console.log(req.params.id);
+        const result = await ServiceCollection.findOne({_id:ObjectId(req.params.id) });
         
-        // res.send(result);
+        res.send(result);
         // console.log(result);
       })
-      // confirm order
-      // app.post("/confirmOrder", async(req,res)=>{
-      //   const result = await OrderCollection.insertOne(req.body);
-      //   res.send(result);
-      //   // console.log(result);
-      // })
-
-      // my  All orders
+      
 
 
 });
